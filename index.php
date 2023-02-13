@@ -9,7 +9,6 @@
     <meta name="description" content="Camera a free jQuery slideshow with many effects, transitions, adaptive layout, easy to customize, using canvas and mobile ready"> 
 	<meta name = "robots" content="noindex">
 	<meta name = "robots" content="noimageindex">
-    <link href="stylesheets/login.css" rel="stylesheet">
     <!-- <link href="stylesheets/administracion.css" rel="stylesheet">
     <link href="stylesheets/alumnos.css" rel="stylesheet">
     <link href="stylesheets/añadir_curso.css" rel="stylesheet">

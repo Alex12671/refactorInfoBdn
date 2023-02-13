@@ -5,8 +5,8 @@
     <body>
 
     <?php
-        include("funciones.php");
-        if($_SESSION) {
+    try {
+        if(isset($_SESSION)) {
           if($_SESSION['rol'] == 2) {
             ?>
             <header>
@@ -46,7 +46,7 @@
                 if($mats->rowCount() == 0) {
     
                     if($value['Data_Inici'] > $today) {
-                        echo "<td class=info> <a href=matricularse.php?codi=".$value['Codi']." > <img src='img/matricula.png' style='width:42px;height:42px;'> </img></a>Matrículate ahora </td>";
+                        echo "<td class=info> <a href=index.php?controller=alumno&action=makeEnrollment&codi=".$value['Codi']." > <img src='img/matricula.png' style='width:42px;height:42px;'> </img></a>Matrículate ahora </td>";
                     } 
                     else {
                         echo "<td class=info>El curso ya ha comenzado</td>";
@@ -56,7 +56,7 @@
                 else if($mats->rowCount() == 1) {
     
                     if($value['Data_Final'] > $today) {
-                        echo "<td> <a href=desmatricularse.php?codi=".$value['Codi']." > <img src='img/cross.png' style='width:42px;height:42px;'> </img></a>Desmatricularse </td>";
+                        echo "<td> <a href=index.php?controller=alumno&action=cancelEnrollment&codi=".$value['Codi']."> <img src='img/cross.png' style='width:42px;height:42px;'> </img></a>Desmatricularse </td>";
                     }
                     else {
                         echo "<td class=info>Curso finalizado.</td>";
@@ -70,14 +70,22 @@
             echo "</table>"; 
           }
           else {
-            echo "Solo los profesores pueden ver esta página";
-            echo "<meta http-equiv=refresh content='2; url=inicioprofesores.php'>";
+            require_once "../../Exceptions/PermissionException.php";
+            throw new PermissionException();
           }
         }
         else {
-          echo "Debes iniciar sesión primero!";
-          echo "<meta http-equiv=refresh content='2; url=index.php'>";
+          require_once "../../Exceptions/NoSessionFoundException.php";
+          throw new NoSessionFoundException();
         }
+      }catch(PermissionException $e) {
+        echo $e->errorMessage();
+        echo "<meta http-equiv=refresh content='2; url=index.php?controller=admin&action=logAdmin'>";
+      }
+      catch(NoSessionFoundException $e) {
+        echo $e->errorMessage();
+        echo "<meta http-equiv=refresh content='2; url=../../index.php'>";
+      }
     ?>
     </body>
 </html>

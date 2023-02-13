@@ -40,11 +40,12 @@ class User extends Database {
         return $stmt;
     }
 
-    public function getUser() {
-        $stmt = $this->db->prepare("SELECT * FROM usuarios WHERE nombre = '".$_SESSION['usuario']."'");
-        $stmt->execute();
-        return $stmt;    
+    public function registerUser($dni,$email,$nom,$cognoms,$edat,$foto) {
+        $stmt = $this->db->prepare("INSERT INTO alumnes VALUES(:dni, :email, :nom, :cognoms, :edat, :foto, :password");
+        $stmt->execute([':dni' => "$dni",':email' => $email, ':nom' => "$nom",':cognoms' => "$cognoms",':edat' => "$edat",':foto' => "$foto"]);
+        return $stmt;  
     }
+    
 
 }
 

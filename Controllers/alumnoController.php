@@ -10,11 +10,10 @@ class AlumnoController{
         $matricula = new Matricula();
         $alumno = new Alumno();
         $curso = new Curso();
-        $result= $alumno->getSelectedStudent($_SESSION['email']);
-        $selectedStudent = $result->fetch();
+        $selectedStudent = $this->getLoggedInStudent();
         $mats= $matricula->getStudentEnrollments($selectedStudent['DNI']);
         $enrollments = $mats->fetchAll();
-        $resultado= $curso->getAllCourses();
+        $resultado= $curso->getActiveCourses();
         $coursesList = $resultado->fetchAll();
         require_once "Views/Alumno/cursos_matriculados.php";
     }
@@ -66,10 +65,61 @@ class AlumnoController{
 
 
         else {
-            $result= $alumno->getSelectedStudent($_SESSION['email']);
-            $selectedStudent = $result->fetch();
+            $selectedStudent = $this->getLoggedInStudent();
             require_once "Views/Alumno/modificar_alumno.php";
         }
+    }
+
+    public function getLoggedInStudent() {
+        require_once "Models/Alumno.php";
+        $alumno = new Alumno();
+        $result= $alumno->getSelectedStudent($_SESSION['email']);
+        $selectedStudent = $result->fetch();
+        return $selectedStudent;
+    }
+
+    public function cancelEnrollment() {
+        if($_SESSION) {
+            if($_SESSION['rol'] == 2) {
+                require_once "Models/Matricula.php";
+                require_once "Models/Alumno.php";
+                $matricula = new Matricula();
+                $selectedStudent = $this->getLoggedInStudent();
+                $matricula->cancelEnrollment($selectedStudent['DNI'],$_GET['codi']);
+                echo "<meta http-equiv=refresh content='0; url=index.php?controller=user&action=showStudentHome'>";
+  
+            }
+            else {
+              echo "Solo los alumnos pueden ver esta página";
+              echo "<meta http-equiv=refresh content='2; url=inicioprofesores.php'>";
+            }
+          }
+          else {
+            echo "Debes iniciar sesión primero!";
+            echo "<meta http-equiv=refresh content='2; url=index.php'>";
+          }
+    }
+
+    public function makeEnrollment() {
+        if($_SESSION) {
+            if($_SESSION['rol'] == 2) {
+                require_once "Models/Matricula.php";
+                require_once "Models/Alumno.php";
+                $matricula = new Matricula();
+                $selectedStudent = $this->getLoggedInStudent();
+                $matricula->makeEnrollment($selectedStudent['DNI'],$_GET['codi']);
+                echo "<meta http-equiv=refresh content='0; url=index.php?controller=user&action=showStudentHome'>";
+  
+            }
+            else {
+              echo "Solo los alumnos pueden ver esta página";
+              echo "<meta http-equiv=refresh content='2; url=inicioprofesores.php'>";
+            }
+          }
+          else {
+            echo "Debes iniciar sesión primero!";
+            echo "<meta http-equiv=refresh content='2; url=index.php'>";
+          }
     }
 }
 ?>

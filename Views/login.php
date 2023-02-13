@@ -1,3 +1,6 @@
+<head>
+<link href="stylesheets/login.css" rel="stylesheet">
+</head>
 <header>
           <h1 class="inicio">Página de inicio</h1>
         <a href="index.php"><img src="img/logo.png" alt="logo"></img></a>
@@ -23,6 +26,6 @@
               <input type="radio" id="profesor" name="rol" value="profesor" required><br/>
 
             <button type="submit" >Iniciar sesión</button>
-            <a class="registro" href="registro.php">Regístrate aquí</a>
+            <a class="registro" href="index.php?controller=user&action=showRegistrationPage">Regístrate aquí</a>
         </form> 
       </div>

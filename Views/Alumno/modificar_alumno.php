@@ -7,7 +7,7 @@
     <body>
 
     <?php
-        include("funciones.php");
+    try {
         if(isset($_SESSION)) {
           if($_SESSION['rol'] == 2) {
             ?>
@@ -43,13 +43,21 @@
                     <?php
             }   
             else {
-            echo "Solo los administradores pueden ver esta página";
-            echo "<meta http-equiv=refresh content='2; url=login_admin.php'>";
+              require_once "../../Exceptions/PermissionException.php";
+              throw new PermissionException();
             }
+          }
+          else {
+            require_once "../../Exceptions/NoSessionFoundException.php";
+            throw new NoSessionFoundException();
+          }
+        }catch(PermissionException $e) {
+          echo $e->errorMessage();
+          echo "<meta http-equiv=refresh content='2; url=index.php?controller=admin&action=logAdmin'>";
         }
-        else {
-          echo "Debes iniciar sesión primero!";
-          echo "<meta http-equiv=refresh content='2; url=login_admin.php'>";
+        catch(NoSessionFoundException $e) {
+          echo $e->errorMessage();
+          echo "<meta http-equiv=refresh content='2; url=../../index.php'>";
         }
     ?>
     </body>
