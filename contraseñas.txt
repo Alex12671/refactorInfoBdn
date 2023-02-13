@@ -1,0 +1,3 @@
+Administrador - admin,123
+Profesor - matias@mail.es,123
+Alumno - mateo@mail.es,123
